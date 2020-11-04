@@ -1,13 +1,8 @@
-import cv2
-import numpy as np
-import matplotlib.pyplot as plt
 import math
-import sympy
 import numpy as np
 import matplotlib.pyplot as plt
+import cv2
 from mpl_toolkits.mplot3d import Axes3D
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-from stl import mesh
 
 fig = plt.figure()
 ax = Axes3D(fig)
@@ -83,7 +78,6 @@ def convert_3d(data):
     y=D*math.cos(all_pitch)*math.cos(all_yaw)
     z=D*math.sin(all_pitch)
     return x,y,z
-    
 
 def convert(data):
     data_converted=[]
