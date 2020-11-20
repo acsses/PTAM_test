@@ -41,7 +41,7 @@ matches = bf.match(des1,des2)
 
 def convert_3d(data):
 
-    d=750/350*2.54/math.atan(view_h)
+    d=750/350*2.54/math.atan(view_w)
     d_from_center = math.sqrt((((data[0]-375)/350*2.54)**2)+(((data[1]-250)/350*2.54)**2))
     D=math.sqrt((d**2)+(d_from_center**2))
     if data[0]-375>0 and data[1]-250<0:#1
@@ -83,14 +83,23 @@ def convert(data):
     data_converted=[]
     for loc in data:
         data_converted.append(convert_3d(loc))
-    coe = round(data_converted[0][1]+0.6,5)/round(data_converted[1][1],5)
-    
-    return round(data_converted[1][0]*coe,5),round(data_converted[1][1]*coe,5),round(data_converted[1][2]*coe,5)
+    A=np.matrix([
+        [-1*data_converted[1][0],data_converted[0][0]],
+        [-1*data_converted[1][1],data_converted[0][1]],
+    ])
+    Y=np.matrix([
+        [0.6],
+        [0],
+    ])
+
+    coe = np.linalg.solve(A,Y).reshape(-1,).tolist()
+    print(coe[0][0])
+    return data_converted[1][0]*coe[0][0],data_converted[1][1]*coe[0][0],data_converted[1][2]*coe[0][0]
 
 def collect(matches):
     polygon=[]
     for one in matches:
-        n =[kp1[one.queryIdx].pt,kp2[one.queryIdx].pt]
+        n =[kp1[one.queryIdx].pt,kp2[one.trainIdx].pt]
         summit=convert(n)
         polygon.append(summit)
     poly=np.array(polygon).astype(float)
