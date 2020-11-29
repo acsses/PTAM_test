@@ -37,32 +37,6 @@ matches = bf.match(des1,des2)
 
 data=[]
 
-def setup():
-    # A-KAZE検出器の生成
-    akaze = cv2.AKAZE_create()
-    img1_g=cv2.cvtColor(cv2.resize(img1,(600,400)), cv2.COLOR_RGB2GRAY)
-    img2_g=cv2.cvtColor(cv2.resize(img1,(600,400)), cv2.COLOR_RGB2GRAY)
-    img3_g=cv2.cvtColor(cv2.resize(img1,(600,400)), cv2.COLOR_RGB2GRAY)
-    # 特徴量の検出と特徴量ベクトルの計算
-    kp1, des1 = akaze.detectAndCompute(img1_g, None)
-    kp2, des2 = akaze.detectAndCompute(img2_g, None)
-    kp3, des3 = akaze.detectAndCompute(img3_g, None)
-    # Brute-Force Matcher生成
-    bf = cv2.BFMatcher(cv2.NORM_HAMMING)
-
-    # 特徴量ベクトル同士をBrute-Force＆KNNでマッチング
-    matches_1 = bf.match(sorted((des1,des2,des3),key=len)[2],sorted((des1,des2,des3),key=len)[1])
-    matches_2 = bf.match(sorted((des1,des2,des3),key=len)[2],sorted((des1,des2,des3),key=len)[0])
-
-    
-
-    for sample in min((matches_1,matches_2),key=len):
-        L=[i for i in max((matches_1,matches_2),key=len) if i.queryIdx==sample.queryIdx]
-        if L not in data:
-            L.append(sample)
-            data.append(L)
-        else:
-            print("wrong")
 
 
 
