@@ -67,8 +67,12 @@ def setup():
 
 
 def convert_3d(data):
+<<<<<<< HEAD
 
     d=375/350*2.54/math.atan(view_w/2)
+=======
+    d=750/350*2.54/math.atan(view_w)
+>>>>>>> release
     d_from_center = math.sqrt((((data[0]-375)/350*2.54)**2)+(((data[1]-250)/350*2.54)**2))
     D=math.sqrt((d**2)+(d_from_center**2))
     if data[0]-375>0 and data[1]-250<0:#1
@@ -111,6 +115,7 @@ def convert(data):
     for loc in data:
         print(convert_3d(loc))
         data_converted.append(convert_3d(loc))
+<<<<<<< HEAD
     A=np.matrix([
         [-1*sum(data_converted[1][:1]),sum(data_converted[0][:1])],
         [-1*sum(data_converted[1][1:]),sum(data_converted[0][1:])],
@@ -124,12 +129,24 @@ def convert(data):
     return data_converted[1][0]*abs(coe[0][1]),data_converted[1][1]*abs(coe[0][1]),data_converted[1][2]*abs(coe[0][1])
 
 def collect(data):
+=======
+    coe_1 = data_converted[1][1]/data_converted[0][1]
+    coe_2 = 0.6/(-1*data_converted[1][0]+data_converted[0][0]*coe_1)
+
+    return -1*round(data_converted[1][0]*coe_2,5),-1*round(data_converted[1][1]*coe_2,5),-1*round(data_converted[1][2]*coe_2,5)
+
+def collect(matches):
+>>>>>>> release
     polygon=[]
     for one in matches:
         n =[kp1[one.queryIdx].pt,kp2[one.trainIdx].pt]
         summit=convert(n)
+<<<<<<< HEAD
         if summit[1]>1000:
             print(summit)
+=======
+        print(summit)
+>>>>>>> release
         polygon.append(summit)
     poly=np.array(polygon).astype(float)
     ax.plot(poly.T[0],poly.T[1],poly.T[2],marker="o",linestyle='None')
