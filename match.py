@@ -21,7 +21,6 @@ view_h=math.radians(27)
 img1 = cv2.imread("test1.jpg")
 # 画像２
 img2 = cv2.imread("test2.jpg")
-
 # A-KAZE検出器の生成
 akaze = cv2.AKAZE_create()
 
@@ -36,12 +35,40 @@ bf = cv2.BFMatcher(cv2.NORM_HAMMING)
 # 特徴量ベクトル同士をBrute-Force＆KNNでマッチング
 matches = bf.match(des1,des2)
 
+data=[]
+
+def setup():
+    # A-KAZE検出器の生成
+    akaze = cv2.AKAZE_create()
+    img1_g=cv2.cvtColor(cv2.resize(img1,(600,400)), cv2.COLOR_RGB2GRAY)
+    img2_g=cv2.cvtColor(cv2.resize(img1,(600,400)), cv2.COLOR_RGB2GRAY)
+    img3_g=cv2.cvtColor(cv2.resize(img1,(600,400)), cv2.COLOR_RGB2GRAY)
+    # 特徴量の検出と特徴量ベクトルの計算
+    kp1, des1 = akaze.detectAndCompute(img1_g, None)
+    kp2, des2 = akaze.detectAndCompute(img2_g, None)
+    kp3, des3 = akaze.detectAndCompute(img3_g, None)
+    # Brute-Force Matcher生成
+    bf = cv2.BFMatcher(cv2.NORM_HAMMING)
+
+    # 特徴量ベクトル同士をBrute-Force＆KNNでマッチング
+    matches_1 = bf.match(sorted((des1,des2,des3),key=len)[2],sorted((des1,des2,des3),key=len)[1])
+    matches_2 = bf.match(sorted((des1,des2,des3),key=len)[2],sorted((des1,des2,des3),key=len)[0])
+
+    
+
+    for sample in min((matches_1,matches_2),key=len):
+        L=[i for i in max((matches_1,matches_2),key=len) if i.queryIdx==sample.queryIdx]
+        if L not in data:
+            L.append(sample)
+            data.append(L)
+        else:
+            print("wrong")
 
 
 
 def convert_3d(data):
 
-    d=750/350*2.54/math.atan(view_w)
+    d=375/350*2.54/math.atan(view_w/2)
     d_from_center = math.sqrt((((data[0]-375)/350*2.54)**2)+(((data[1]-250)/350*2.54)**2))
     D=math.sqrt((d**2)+(d_from_center**2))
     if data[0]-375>0 and data[1]-250<0:#1
@@ -55,14 +82,14 @@ def convert_3d(data):
         r_r=math.atan(((250-data[1])/350*2.54)/((data[0]-375)/350*2.54))
         all_rotate=r_roll+r_r
         r_p=math.asin(d_from_center*math.sin(all_rotate)/D)
-        all_pitch=r_pitch-r_p
+        all_pitch=r_pitch+r_p
         r_y=math.asin(d_from_center*math.cos(all_rotate)/D)
         all_yaw=r_yaw-r_y
     elif data[0]-375<0 and data[1]-250<0:#3
         r_r=math.atan(((250-data[1])/350*2.54)/((data[0]-375)/350*2.54))
         all_rotate=r_roll+r_r
         r_p=math.asin(d_from_center*math.sin(all_rotate)/D)
-        all_pitch=r_pitch-r_p
+        all_pitch=r_pitch+r_p
         r_y=math.asin(d_from_center*math.cos(all_rotate)/D)
         all_yaw=r_yaw+r_y
     elif data[0]-375<0 and data[1]-250>0:#4
@@ -82,10 +109,11 @@ def convert_3d(data):
 def convert(data):
     data_converted=[]
     for loc in data:
+        print(convert_3d(loc))
         data_converted.append(convert_3d(loc))
     A=np.matrix([
-        [-1*data_converted[1][0],data_converted[0][0]],
-        [-1*data_converted[1][1],data_converted[0][1]],
+        [-1*sum(data_converted[1][:1]),sum(data_converted[0][:1])],
+        [-1*sum(data_converted[1][1:]),sum(data_converted[0][1:])],
     ])
     Y=np.matrix([
         [0.6],
@@ -93,14 +121,15 @@ def convert(data):
     ])
 
     coe = np.linalg.solve(A,Y).reshape(-1,).tolist()
-    print(coe[0][0])
-    return data_converted[1][0]*coe[0][0],data_converted[1][1]*coe[0][0],data_converted[1][2]*coe[0][0]
+    return data_converted[1][0]*abs(coe[0][1]),data_converted[1][1]*abs(coe[0][1]),data_converted[1][2]*abs(coe[0][1])
 
-def collect(matches):
+def collect(data):
     polygon=[]
     for one in matches:
         n =[kp1[one.queryIdx].pt,kp2[one.trainIdx].pt]
         summit=convert(n)
+        if summit[1]>1000:
+            print(summit)
         polygon.append(summit)
     poly=np.array(polygon).astype(float)
     ax.plot(poly.T[0],poly.T[1],poly.T[2],marker="o",linestyle='None')
