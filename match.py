@@ -67,12 +67,8 @@ def setup():
 
 
 def convert_3d(data):
-<<<<<<< HEAD
 
     d=375/350*2.54/math.atan(view_w/2)
-=======
-    d=750/350*2.54/math.atan(view_w)
->>>>>>> release
     d_from_center = math.sqrt((((data[0]-375)/350*2.54)**2)+(((data[1]-250)/350*2.54)**2))
     D=math.sqrt((d**2)+(d_from_center**2))
     if data[0]-375>0 and data[1]-250<0:#1
