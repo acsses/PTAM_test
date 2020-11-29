@@ -48,30 +48,30 @@ def convert_3d(data):
     if data[0]-375>0 and data[1]-250<0:#1
         r_r=math.atan(((250-data[1])/350*2.54)/((data[0]-375)/350*2.54))
         all_rotate=r_roll+r_r
-        r_p=math.asin(d_from_center*math.sin(all_rotate)/D)
+        r_p=math.atan(d_from_center*math.sin(all_rotate)/D)
         all_pitch=r_pitch+r_p
-        r_y=math.asin(d_from_center*math.cos(all_rotate)/D)
+        r_y=math.atan(d_from_center*math.cos(all_rotate)/D)
         all_yaw=r_yaw-r_y
     elif data[0]-375>0 and data[1]-250>0:#2
         r_r=math.atan(((250-data[1])/350*2.54)/((data[0]-375)/350*2.54))
         all_rotate=r_roll+r_r
-        r_p=math.asin(d_from_center*math.sin(all_rotate)/D)
+        r_p=math.atan(d_from_center*math.sin(all_rotate)/D)
         all_pitch=r_pitch+r_p
-        r_y=math.asin(d_from_center*math.cos(all_rotate)/D)
+        r_y=math.atan(d_from_center*math.cos(all_rotate)/D)
         all_yaw=r_yaw-r_y
     elif data[0]-375<0 and data[1]-250<0:#3
         r_r=math.atan(((250-data[1])/350*2.54)/((data[0]-375)/350*2.54))
         all_rotate=r_roll+r_r
-        r_p=math.asin(d_from_center*math.sin(all_rotate)/D)
+        r_p=math.atan(d_from_center*math.sin(all_rotate)/D)
         all_pitch=r_pitch+r_p
-        r_y=math.asin(d_from_center*math.cos(all_rotate)/D)
+        r_y=math.atan(d_from_center*math.cos(all_rotate)/D)
         all_yaw=r_yaw+r_y
     elif data[0]-375<0 and data[1]-250>0:#4
         r_r=math.atan(((250-data[1])/350*2.54)/((data[0]-375)/350*2.54))
         all_rotate=r_roll+r_r
-        r_p=math.asin(d_from_center*math.sin(all_rotate)/D)
+        r_p=math.atan(d_from_center*math.sin(all_rotate)/D)
         all_pitch=r_pitch+r_p
-        r_y=math.asin(d_from_center*math.cos(all_rotate)/D)
+        r_y=math.atan(d_from_center*math.cos(all_rotate)/D)
         all_yaw=r_yaw+r_y
     
     
