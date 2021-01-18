@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "/Users/takabatomoki/Library/Arduino15/packages/arduino/tools/**",
+                "/Users/takabatomoki/Library/Arduino15/packages/arduino/hardware/avr/1.8.1/**",
+                "/Users/takabatomoki/Documents/Arduino/tools/**",
+                "/Users/takabatomoki/Documents/Arduino/libraries/**",
+                "/Applications/Arduino.app/Contents/Java/libraries/**",
+                "/Users/takabatomoki/Documents/Arduino/hardware/espressif/esp32/**"
+            ],
+            "forcedInclude": [],
+            "defines": [
+                "USBCON"
+            ],
+            "macFrameworkPath": [
+                "/System/Library/Frameworks",
+                "/Library/Frameworks"
+            ],
+            "intelliSenseMode": "clang-x64",
+            "compilerPath": "/usr/local/opt/llvm/bin/clang",
+            "cStandard": "c11",
+            "cppStandard": "c++14"
+        }
+    ],
+    "version": 4
+}
