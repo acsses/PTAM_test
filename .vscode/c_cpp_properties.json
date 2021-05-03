@@ -8,7 +8,8 @@
                 "/Users/takabatomoki/Documents/Arduino/tools/**",
                 "/Users/takabatomoki/Documents/Arduino/libraries/**",
                 "/Applications/Arduino.app/Contents/Java/libraries/**",
-                "/Users/takabatomoki/Documents/Arduino/hardware/espressif/esp32/**"
+                "/Users/takabatomoki/Documents/Arduino/hardware/espressif/esp32/**",
+                "Arduino.app/Contents/Java/libraries/**"
             ],
             "forcedInclude": [],
             "defines": [
